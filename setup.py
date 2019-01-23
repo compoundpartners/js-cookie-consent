@@ -1,31 +1,17 @@
-from distutils.core import setup
-from setuptools import find_packages
+# -*- coding: utf-8 -*-
+from setuptools import setup, find_packages
+from cookie_consent import __version__
 
-
-VERSION = __import__("cookie_consent").__version__
-
-CLASSIFIERS = [
-    'Framework :: Django',
-    'Intended Audience :: Developers',
-    'License :: OSI Approved :: BSD License',
-    'Operating System :: OS Independent',
-    'Topic :: Software Development',
-]
-
-install_requires = [
-    'Django>=1.4.2',
-    'django-appconf',
-]
 
 setup(
-    name="django-cookie-consent",
-    description="Django cookie consent application",
-    version=VERSION,
-    author="Informatika Mihelac",
-    author_email="bmihelac@mihelac.org",
-    url="https://github.com/bmihelac/django-cookie-consent",
-    packages=find_packages(exclude=["tests"]),
+    name='js-cookie-consent',
+    version=__version__,
+    description=open('README.rst').read(),
+    author='Compound Partners Ltd',
+    author_email='hello@compoundpartners.co.uk',
+    packages=find_packages(),
+    platforms=['OS Independent'],
+    install_requires=['django-appconf',],
     include_package_data=True,
-    install_requires=install_requires,
-    classifiers=CLASSIFIERS,
+    zip_safe=False,
 )

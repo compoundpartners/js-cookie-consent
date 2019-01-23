@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.core.cache import get_cache
+from django.core.cache import caches
 
 from cookie_consent.conf import settings
 
 
-cache = get_cache(settings.COOKIE_CONSENT_CACHE_BACKEND)
+cache = caches[settings.COOKIE_CONSENT_CACHE_BACKEND]
 
 CACHE_KEY = 'cookie_consent_cache'
 CACHE_TIMEOUT = 60 * 60

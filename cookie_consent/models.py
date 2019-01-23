@@ -2,10 +2,14 @@
 from __future__ import unicode_literals
 
 import re
+import six
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import RegexValidator
+from django.utils.encoding import python_2_unicode_compatible
+from cms.models.pluginmodel import CMSPlugin
+from aldryn_common.admin_fields.sortedm2m import SortedM2MModelField
 
 from cookie_consent.cache import delete_cache
 
@@ -13,11 +17,12 @@ from cookie_consent.cache import delete_cache
 COOKIE_NAME_RE = re.compile(r'^[-_a-zA-Z0-9]+$')
 validate_cookie_name = RegexValidator(
     COOKIE_NAME_RE,
-    _(u"Enter a valid 'varname' consisting of letters, numbers"
+    _("Enter a valid 'varname' consisting of letters, numbers"
       ", underscores or hyphens."),
     'invalid')
 
 
+@python_2_unicode_compatible
 class CookieGroup(models.Model):
     varname = models.CharField(
         _('Variable name'),
@@ -41,7 +46,7 @@ class CookieGroup(models.Model):
         verbose_name_plural = _('Cookie Groups')
         ordering = ['ordering']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_version(self):
@@ -59,6 +64,7 @@ class CookieGroup(models.Model):
         delete_cache()
 
 
+@python_2_unicode_compatible
 class Cookie(models.Model):
     cookiegroup = models.ForeignKey(
         CookieGroup,
@@ -74,7 +80,7 @@ class Cookie(models.Model):
         verbose_name_plural = _('Cookies')
         ordering = ['-created']
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s %s%s" % (self.name, self.domain, self.path)
 
     @property
@@ -113,3 +119,18 @@ class LogItem(models.Model):
         verbose_name = _('Log item')
         verbose_name_plural = _('Log items')
         ordering = ['-created']
+
+
+@python_2_unicode_compatible
+class CookieConsentPlugin(CMSPlugin):
+    groups = SortedM2MModelField(
+        CookieGroup, blank=True,
+        help_text=_('Select and arrange specific cookie groups, or, leave blank to '
+                    'select all.')
+    )
+
+    def __str__(self):
+        return 'Cookie consent plugin'
+
+    def copy_relations(self, oldinstance):
+        self.groups = oldinstance.groups.all()

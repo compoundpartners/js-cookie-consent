@@ -7,7 +7,7 @@ from django.views.generic import (
     ListView,
     View,
 )
-
+from aldryn_apphooks_config.mixins import AppConfigMixin
 from .models import (
     CookieGroup,
 )
@@ -17,14 +17,14 @@ from .util import (
 )
 
 
-class CookieGroupListView(ListView):
+class CookieGroupListView(AppConfigMixin, ListView):
     """
     Display all cookies.
     """
     model = CookieGroup
 
 
-class CookieGroupBaseProcessView(View):
+class CookieGroupBaseProcessView(AppConfigMixin, View):
 
     def get_success_url(self):
         if hasattr(self.request, 'next'):
