@@ -69,7 +69,8 @@ class Cookie(models.Model):
     cookiegroup = models.ForeignKey(
         CookieGroup,
         verbose_name=CookieGroup._meta.verbose_name)
-    name = models.CharField(_('Name'), max_length=250)
+    name = models.CharField(_('Name'), max_length=250,
+        validators=[validate_cookie_name])
     description = models.TextField(_('Description'), blank=True)
     path = models.TextField(_('Path'), blank=True, default="/")
     domain = models.CharField(_('Domain'), max_length=250, blank=True)
