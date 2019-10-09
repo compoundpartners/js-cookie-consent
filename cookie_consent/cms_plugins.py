@@ -16,6 +16,7 @@ class CookieConsentPlugin(CMSPluginBase):
     name = _('Cookie consent')
     render_template = 'cookie_consent/plugin.html'
     model = models.CookieConsentPlugin
+    cache = False
 
     def render(self, context, instance, placeholder):
         groups = instance.groups
