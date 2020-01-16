@@ -68,6 +68,7 @@ class CookieGroup(models.Model):
 class Cookie(models.Model):
     cookiegroup = models.ForeignKey(
         CookieGroup,
+        on_delete=models.CASCADE,
         verbose_name=CookieGroup._meta.verbose_name)
     name = models.CharField(_('Name'), max_length=250,
         validators=[validate_cookie_name])
@@ -112,6 +113,7 @@ class LogItem(models.Model):
     action = models.IntegerField(_('Action'), choices=ACTION_CHOICES)
     cookiegroup = models.ForeignKey(
         CookieGroup,
+        on_delete=models.CASCADE,
         verbose_name=CookieGroup._meta.verbose_name)
     version = models.CharField(_('Version'), max_length=32)
     created = models.DateTimeField(_('Created'), auto_now_add=True, blank=True)
